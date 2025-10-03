@@ -1,5 +1,5 @@
-COMPOSE_PROJECT_NAME_DEV=aichat_dev
-COMPOSE_PROJECT_NAME_PROD=aichat_prod
+COMPOSE_PROJECT_NAME_DEV=vpn_dev
+COMPOSE_PROJECT_NAME_PROD=vpn_prod
 
 COMPOSE_FILE_DEV = docker/docker-compose.dev.yaml
 COMPOSE_FILE_PROD = docker/docker-compose.prod.yaml

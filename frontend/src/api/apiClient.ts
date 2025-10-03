@@ -1,16 +1,14 @@
-import axios from 'axios'
-import WebApp from '@twa-dev/sdk'
+import axios from 'axios';
+import WebApp from '@twa-dev/sdk';
 
 const apiClient = axios.create({
-  baseURL: '/api/v1/',
-})
+  baseURL: import.meta.env.VITE_API_URL,
+});
 
-apiClient.interceptors.request.use((config) => {
-  const { initData } = WebApp
-  if (initData) {
-    config.headers['Telegram-Init-Data'] = initData
-  }
-  return config
-})
+apiClient.interceptors.request.use(config => {
+  const { initData } = WebApp;
+  initData && (config.headers['Authorization'] = initData);
+  return config;
+});
 
-export default apiClient
+export default apiClient;

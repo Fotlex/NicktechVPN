@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_celery_beat",
     "corsheaders",
+    "backend.users.apps.UsersConfig",
+    "backend.content.apps.ContentConfig",
 ]
 
 MIDDLEWARE = [
@@ -35,8 +37,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    
-    "backend.users.middlewares.TWAAuthorizationMiddleware",
 ]
 
 ROOT_URLCONF = "backend.core.urls"
@@ -124,3 +124,10 @@ CACHES = {
         "LOCATION": DJANGO_CACHE_LOCATION,
     }
 }
+
+
+ADMIN_REORDER = [
+    {"app": "users", "label": "Пользователи"},
+    {"app": "content", "label": "Контент и Настройки"},
+    {"app": "django_celery_beat", "label": "Планировщик задач (Celery Beat)"},
+]
