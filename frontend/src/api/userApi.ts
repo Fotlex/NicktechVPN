@@ -15,6 +15,6 @@ export const getTelegramUserAvatar = (userId: number): (() => Promise<string | n
 };
 
 export const getUserIp = async () => {
-    const response = await apiClient.get('/get_user_ip/');
+    const response = await apiClient.get('/users/ip/');
     return response.data;
   };

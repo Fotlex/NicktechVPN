@@ -94,13 +94,19 @@ export default defineComponent({
           router.push({ name: 'subscription' });
           return;
         }
-        const currentUserData = await fetchCurrentUser(startParam);
-        if (currentUserData) {
-          usage.value = currentUserData.usage;
-          subscriptionDate.value = currentUserData.subscriptionDate;
-          canClaimGift.value = currentUserData.can_claim_gift;
-        }
+        const data = await fetchCurrentUser(startParam);
+        if (data && data.subscription) {
+          const sub = data.subscription;
 
+          usage.value = `${sub.used_gb} ГБ`;
+
+          const date = new Date(sub.end_date);
+          subscriptionDate.value = date.toLocaleDateString('ru-RU', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          });
+        }
         const ipResponse = await getUserIp();
         if (ipResponse.ip) {
           userIp.value = ipResponse.ip;
