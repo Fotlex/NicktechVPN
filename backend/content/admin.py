@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .models import BotTexts, GroupUrl, WebAppUrl
+from .models import BotTexts, GroupUrl, WebAppUrl, VpnSettings
 
 
 class SingletonModelAdmin(admin.ModelAdmin):
@@ -35,3 +35,9 @@ class GroupUrlAdmin(SingletonModelAdmin):
 @admin.register(BotTexts)
 class BotTextsAdmin(SingletonModelAdmin):
     pass
+
+
+@admin.register(VpnSettings)
+class BotTextsAdmin(SingletonModelAdmin):
+    pass
+

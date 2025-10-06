@@ -52,6 +52,24 @@ class BotTexts(models.Model):
         verbose_name_plural = "Тексты бота"
 
 
+class VpnSettings(models.Model):
+    trial_time = models.IntegerField(default=5, verbose_name='Количество дней пробного периода')
+    trafic_day_limit = models.IntegerField(default=15, verbose_name='Лимит трафика в гигабайтах за день')
+    
+    @classmethod
+    def load(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj
+    
+    def __str__(self):
+        return "Настройки VPN"
+    
+    class Meta:
+        verbose_name = "Настройки VPN"
+        verbose_name_plural = "Настройки VPN"
+        
+
+
 def clear_bot_settings_cache(sender, **kwargs):
     cache.delete(CACHE_KEY_BOT_SETTINGS)
 

@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "backend.users.apps.UsersConfig",
     "backend.content.apps.ContentConfig",
+    "backend.servers.apps.ServersConfig",
 ]
 
 MIDDLEWARE = [
@@ -129,6 +130,7 @@ CACHES = {
 
 ADMIN_REORDER = [
     {"app": "users", "label": "Пользователи"},
+    {"app": "servers", "label": "VPN Сервера"},
     {"app": "content", "label": "Контент и Настройки"},
     {"app": "django_celery_beat", "label": "Планировщик задач (Celery Beat)"},
 ]

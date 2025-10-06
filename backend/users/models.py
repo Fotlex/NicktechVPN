@@ -3,7 +3,7 @@ import uuid
 from datetime import timedelta
 
 from django.utils import timezone
-from django.db import models
+from django.db import models 
 
 
 class User(models.Model):
