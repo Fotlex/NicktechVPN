@@ -10,7 +10,7 @@ from telegram_webapp_auth.auth import TelegramAuthenticator
 from telegram_webapp_auth.errors import InvalidInitDataError
 
 from .models import User, Subscription
-from backend.servers.py3xui import create_client
+from backend.servers.tasks import create_client_task
 from backend.content.models import VpnSettings
 
 
@@ -63,11 +63,10 @@ class TWAAuthorizationMiddleware:
                     is_vpn_client_active=True,
                 )
                 
-                create_client(
-                    tg_id=current_user.id,
-                    days=vpn_settings.trial_time,
-                    limit_gb=vpn_settings.trial_time * vpn_settings.trafic_day_limit,
-                )
+                create_client_task.apply_async(args=[
+                    current_user.id,
+                    vpn_settings.trial_time * vpn_settings.trafic_day_limit
+                ])
             
             request.tg_user = current_user
             return self.get_response(request)

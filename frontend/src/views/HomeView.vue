@@ -98,14 +98,21 @@ export default defineComponent({
         if (data && data.subscription) {
           const sub = data.subscription;
 
-          usage.value = `${sub.used_gb} ГБ`;
+          usage.value = `${sub.used_gb}/${sub.total_gb_limit} ГБ`;
 
-          const date = new Date(sub.end_date);
-          subscriptionDate.value = date.toLocaleDateString('ru-RU', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-          });
+          const endDate = new Date(sub.end_date);
+          const now = new Date();
+
+          if (endDate < now) {
+            subscriptionDate.value = "Неактивна";
+          } else {
+            subscriptionDate.value = endDate.toLocaleDateString('ru-RU', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            });
+          }
+
         }
         const ipResponse = await getUserIp();
         if (ipResponse.ip) {
