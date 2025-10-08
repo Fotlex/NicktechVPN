@@ -170,7 +170,7 @@ export default defineComponent({
 .dashboard-card {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
@@ -199,10 +199,11 @@ export default defineComponent({
 }
 
 .logo {
-  width: 190px;
-  height: 120px;
+  width: 100%;
+  height: 280px;
   align-self: center;
-  margin-bottom: 10px;
+  margin-bottom: auto;
+  margin-top: 0px;
 }
 
 .user-section {
@@ -211,12 +212,14 @@ export default defineComponent({
   gap: 10px;
   align-items: center;
   flex-shrink: 0;
+  margin-bottom: 7%;
+  margin-top: auto;
 }
 
 .user-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 20px;
   color: rgb(18, 18, 18);
   font-weight: 600;
@@ -262,6 +265,7 @@ export default defineComponent({
   flex-direction: column;
   gap: 30px;
   flex-shrink: 0;
+  margin-bottom: 30px;
 }
 
 .action-buttons {
