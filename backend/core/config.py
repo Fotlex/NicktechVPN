@@ -22,6 +22,10 @@ class Config(BaseSettings):
     REDIS_DB_CELERY: str
     REDIS_DB_FSM: str
     REDIS_DB_CACHE: str
+    
+    YOOKASSA_SHOP_ID: str
+    YOOKASSA_SECRET_KEY: str
+    APP_URL: str
 
     class Config:
         env_file = ".env"

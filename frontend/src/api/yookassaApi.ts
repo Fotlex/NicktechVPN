@@ -2,7 +2,7 @@ import apiClient from './apiClient';
 
 export const createPayment = async (tariffId: number, email: string) => {
   const response = await apiClient.post(
-    'yookassa/create_payment/', { tariff_id: tariffId, email: email }
+    'payment/yookassa_create_payment/', { tariff_id: tariffId, email: email }
   );
   return response.data;
 };

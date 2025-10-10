@@ -2075,13 +2075,13 @@ propcache = ">=0.2.1"
 
 [[package]]
 name = "yookassa"
-version = "3.7.0"
+version = "3.7.1"
 description = "YooKassa API SDK Python Library"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "yookassa-3.7.0.tar.gz", hash = "sha256:148e97e0fc1d7c06158d56601d056a3c9a51ad813d2358d018158f223df54c27"},
+    {file = "yookassa-3.7.1.tar.gz", hash = "sha256:f2a070ec224305bbbc2dfc29784474943c0b91875ebd0b703a642516754a45c9"},
 ]
 
 [package.dependencies]
@@ -2094,4 +2094,4 @@ urllib3 = "*"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "5e8f6a986b3f370701c3e6b39380bbb63e1e3a8b33e42d1ec3670f13aa0a40a2"
+content-hash = "3a00f34973aa7d44b09ea7b772ceb3e43149d03c5f97f097cedcd45eda8a44a7"
