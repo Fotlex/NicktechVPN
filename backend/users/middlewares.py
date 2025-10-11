@@ -1,3 +1,5 @@
+import re
+
 from datetime import timedelta 
 
 from django.conf import settings
@@ -20,7 +22,7 @@ class TWAAuthorizationMiddleware:
         self._telegram_authenticator = TelegramAuthenticator(settings.TELEGRAM_SECRET_KEY)
         
     def __call__(self, request):
-        if request.path.startswith('/admin/') or request.path.startswith('/static/'):
+        if request.path.startswith('/admin/') or request.path.startswith('/static/') or request.path == '/api/v1/yookassa/webhook/':
             return self.get_response(request)
             
         auth_cred = request.headers.get('Authorization')
@@ -67,6 +69,22 @@ class TWAAuthorizationMiddleware:
                     current_user.id,
                     vpn_settings.trial_time * vpn_settings.trafic_day_limit
                 ])
+                
+                start_param = self.get_start_param(request)
+                print("проверка start_param")
+                if start_param:
+                    start_param = str(start_param)
+                    if start_param.isdigit():
+                        referrer_id = int(start_param)
+                        if current_user.tg_id != referrer_id:
+                            try:
+                                referrer_user = User.objects.get(id=referrer_id)
+                                
+                                current_user.referred_by = referrer_user
+                                current_user.save()
+                                
+                            except Exception as e:
+                                print(f"Error creating referral: {e}")
             
             request.tg_user = current_user
             return self.get_response(request)
@@ -76,3 +94,11 @@ class TWAAuthorizationMiddleware:
                 data={'error': str(e)}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+            
+    def get_start_param(self, request):
+        try:
+            return request.GET.get('start_param')
+        except Exception as e:
+            print("ошибка получения start_param:", e)
+            return None
+        

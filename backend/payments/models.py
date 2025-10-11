@@ -34,8 +34,8 @@ class Tariff(models.Model):
 class Payment(models.Model):
     STATUS = (
         ('pending', 'Ожидание'),
-        ('canseled', 'Отменен'),
-        ('successful', 'Успешный')
+        ('canceled', 'Отменен'),
+        ('succeeded', 'Успешный')
     )
     payment_id = models.CharField(
         max_length=36,  

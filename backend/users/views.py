@@ -24,3 +24,23 @@ class UserViewSet(viewsets.GenericViewSet):
         else:
             ip = request.META.get('REMOTE_ADDR')
         return Response({"ip": ip})
+    
+    
+class ReferralViewSet(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    @action(detail=False, methods=['get'])
+    def get_referrals(self, request):
+        current_user = request.tg_user
+        referrals = current_user.referrals.all()
+
+        referral_data = []
+        for referral in referrals:
+            referred_user = referral.referred_by
+            referral_data.append({
+                'id': referred_user.id,
+                'username': referred_user.username,
+            })
+
+        return Response(referral_data, status=status.HTTP_200_OK)

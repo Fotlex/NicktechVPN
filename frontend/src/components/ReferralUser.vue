@@ -17,7 +17,7 @@
       </div>
       <div class="username">{{ user.username }}</div>
     </div>
-    <div class="bonus-text">+100₽</div>
+    <div class="bonus-text"></div>
   </div>
 </template>
 

@@ -18,3 +18,4 @@ export const getUserIp = async () => {
     const response = await apiClient.get('/users/ip/');
     return response.data;
   };
+

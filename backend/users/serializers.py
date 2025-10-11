@@ -27,6 +27,8 @@ class UserSerializer(serializers.ModelSerializer):
             'id', 
             'username', 
             'first_name', 
+            'referred_by',
+            'refferal_balance',
             'date_joined',
             'subscription',  
         ]

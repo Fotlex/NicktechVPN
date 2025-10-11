@@ -17,6 +17,8 @@ class User(models.Model):
         max_length=255, null=True, blank=True, verbose_name="Имя"
     )
 
+    refferal_balance = models.IntegerField(default=0, verbose_name='Реферальный баланс')
+    
     referred_by = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,

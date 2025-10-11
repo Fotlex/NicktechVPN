@@ -75,7 +75,8 @@ def update_client(tg_id: int, days: int, gb_limit: int):
         client = api.client.get_by_email(email=str(tg_id))
         if client.expiry_time > int(timezone.now().timestamp() * 1000):
             client.expiry_time += days * 24 * 60 * 60 * 1000
-            client.total_gb += gb_limit * 1024**3
+            total_gb = client.total_gb
+            client.total_gb = total_gb + gb_limit * 1024**3
         else:
             client.expiry_time = int((timezone.now() + timedelta(days=days)).timestamp() * 1000)
             
@@ -84,8 +85,8 @@ def update_client(tg_id: int, days: int, gb_limit: int):
             client.enable = True
             client.total_gb = gb_limit * 1024**3
             
-        client.id = subscription.vless_uuid
-        api.client.update(subscription.vless_uuid, client)
+        client.id = str(subscription.vless_uuid)
+        api.client.update(str(subscription.vless_uuid), client)
         
         auto_update_data(
             subscription=subscription,

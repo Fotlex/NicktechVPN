@@ -1,17 +1,22 @@
 import uuid
+import json
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.utils import timezone
 
 from yookassa import Payment as YookassaPayment, Configuration
+from yookassa.domain.notification import WebhookNotificationFactory
 
 from .serializers import TariffSerializer
 from .models import Tariff, Payment
 from backend.core.config import config
 from backend.users.models import User
+from backend.servers.tasks import update_client_task
+from backend.content.models import VpnSettings
 
 
 Configuration.account_id = config.YOOKASSA_SHOP_ID
@@ -98,3 +103,36 @@ class PaymentViewSet(viewsets.ViewSet):
             print(e)
             return Response({"error": "error creating payment"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+        
+class YooKassaWebhookView(viewsets.ViewSet):
+    @action(detail=False, methods=['post'])
+    def webhook(self, request):
+        try:
+            event_json = request.body.decode('utf-8')
+            event_dict = json.loads(event_json)
+
+            notification = WebhookNotificationFactory().create(event_dict)
+            payment_id = notification.object.id
+            
+            if notification.object.status == "succeeded":
+                payment = Payment.objects.select_related('user').filter(payment_id=payment_id).first()
+                payment.status = "succeeded"
+                user = payment.user
+                tariff = payment.tariff
+                vpn_settings = VpnSettings.objects.get(id=1)
+                gb_limit = tariff.duration_days * vpn_settings.trafic_day_limit
+                payment.save()
+                
+            update_client_task.apply_async(args=[
+                user.id,
+                tariff.duration_days,
+                gb_limit,
+            ])
+                
+            if notification.object.status == "canceled":
+                payment.status = "canceled"
+
+            return Response({"status": "ok"}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

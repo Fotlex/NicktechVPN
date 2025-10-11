@@ -11,7 +11,7 @@
       <div class="referral-list">
         <ReferralUser v-for="user in referralUsers" :key="user.id" :user="user" />
       </div>
-      <InfoBanner class="info-banner" text="С каждого приведённого друга вы будете получать 100₽ на баланс" />
+      <InfoBanner class="info-banner" text="С каждого приведённого друга вы будете получать % от его пополнений на баланс" />
     </div>
     <DashboardButton class="dashboard-button" />
   </div>
@@ -19,7 +19,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
-import { fetchReferralData, getTelegramUserAvatar } from '@/api';
+import { fetchReferralData, getTelegramUserAvatar, fetchCurrentUser } from '@/api';
+
 import { useTwaSdk } from '@/composables/useTwaSdk';
 import StatsBox from '@/components/StatsBox.vue';
 import ReferralLink from '@/components/ReferralLink.vue';
@@ -44,9 +45,11 @@ export default defineComponent({
     const referralCount = ref(0);
     const referralLink = ref('https://t.me/your_referral_link');
     const referralUsers = ref<{ id: number; username: string; avatar: () => Promise<string | null> }[]>([]);
-
+    
     onMounted(async () => {
       const userData = getUserData();
+      const currentUser = await fetchCurrentUser(null);
+      referralBalance.value = currentUser.refferal_balance;
       if (userData?.id) {
         const botUsername = import.meta.env.VITE_BOT_USERNAME;
         const appName = import.meta.env.VITE_APP_NAME;
@@ -60,8 +63,9 @@ export default defineComponent({
           username: user.username,
           avatar: getTelegramUserAvatar(user.id),
         }));
+        const userData = getUserData();
         referralCount.value = referralData.length;
-        referralBalance.value = referralData.length * 100;
+
       } catch (error) {}
     });
 

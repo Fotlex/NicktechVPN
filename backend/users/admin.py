@@ -11,6 +11,7 @@ class UserAdmin(admin.ModelAdmin):
         "first_name",
         "referred_by",
         "date_joined",
+        "refferal_balance",
     )
     search_fields = ("id", "username", "first_name")
     list_filter = ("date_joined",)
