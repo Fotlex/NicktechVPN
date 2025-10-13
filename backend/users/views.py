@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .serializers import UserSerializer
-from .models import User
+from .models import User, Subscription
 
 
 class UserViewSet(viewsets.GenericViewSet):
@@ -24,6 +24,12 @@ class UserViewSet(viewsets.GenericViewSet):
         else:
             ip = request.META.get('REMOTE_ADDR')
         return Response({"ip": ip})
+    
+    @action(detail=False, methods=['get'], url_path='vpn_config')
+    def get_access_url(self, request):
+        user = request.tg_user
+        subscription = Subscription.objects.get(user=user)
+        return Response({'vpn_url': subscription.vless_uuid})
     
     
 class ReferralViewSet(viewsets.ViewSet):

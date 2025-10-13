@@ -14,6 +14,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             'end_date', 
             'trial_activated', 
             'used_gb', 
+            'vless_uuid',
             'total_gb_limit',
         ]
 

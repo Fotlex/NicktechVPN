@@ -13,6 +13,12 @@ class VpnServer(models.Model):
     inbound_id = models.PositiveIntegerField(
         default=1, verbose_name="ID входящего подключения"
     )
+    
+    domen = models.CharField(verbose_name='Домен и порт', max_length=100, null=True, blank=True)
+    public_key = models.CharField(null=True, blank=True, verbose_name='Публичный ключ', max_length=255)
+    website_name = models.CharField(null=True, blank=True, verbose_name='Имя вебсайта', max_length=255)
+    short_id = models.CharField(null=True, blank=True, verbose_name='Короткий ID', max_length=255)
+    
     is_active = models.BooleanField(default=True, verbose_name="Сервер активен")
 
     def __str__(self):

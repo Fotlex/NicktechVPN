@@ -47,7 +47,7 @@ class Subscription(models.Model):
         verbose_name="Пользователь",
     )
     end_date = models.DateTimeField(verbose_name="Дата окончания")
-    vless_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    vless_uuid = models.UUIDField(default=uuid.uuid4, verbose_name='ID клиента в 3x-ui', unique=True)
 
     trial_activated = models.BooleanField(
         default=False, verbose_name="Триал активирован"

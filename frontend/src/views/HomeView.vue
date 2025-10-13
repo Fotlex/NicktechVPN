@@ -180,17 +180,6 @@ export default defineComponent({
   position: relative;
 }
 
-.dashboard-card::after {
-  content: '';
-  display: block;
-  height: 50px;
-  position: absolute;
-  bottom: -50px;
-  left: 0;
-  right: 0;
-  z-index: -1;
-}
-
 .dashboard-content {
   display: flex;
   flex-direction: column;
@@ -200,7 +189,7 @@ export default defineComponent({
 
 .logo {
   width: 100%;
-  height: 280px;
+  height: 20vh;
   align-self: center;
   margin-bottom: auto;
   margin-top: 0px;
@@ -265,7 +254,6 @@ export default defineComponent({
   flex-direction: column;
   gap: 30px;
   flex-shrink: 0;
-  margin-bottom: 30px;
 }
 
 .action-buttons {

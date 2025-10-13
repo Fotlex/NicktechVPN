@@ -22,7 +22,7 @@ class TWAAuthorizationMiddleware:
         self._telegram_authenticator = TelegramAuthenticator(settings.TELEGRAM_SECRET_KEY)
         
     def __call__(self, request):
-        if request.path.startswith('/admin/') or request.path.startswith('/static/') or request.path == '/api/v1/yookassa/webhook/':
+        if request.path.startswith('/admin/') or request.path.startswith('/static/') or request.path == '/api/v1/yookassa/webhook/' or request.path.startswith('/api/v1/subscriptions/'):
             return self.get_response(request)
             
         auth_cred = request.headers.get('Authorization')

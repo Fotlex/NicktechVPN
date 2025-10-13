@@ -9,6 +9,7 @@ urlpatterns = [
     
     path('api/v1/', include('backend.users.urls')),
     path('api/v1/', include('backend.payments.urls')),
+    path('api/v1/', include('backend.servers.urls')),
 ]
 
 if settings.DEBUG:

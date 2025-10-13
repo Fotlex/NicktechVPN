@@ -20,5 +20,19 @@ class UserAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
     
+
+@admin.register(Subscription) 
+class Subscription(admin.ModelAdmin):
+    list_display = (
+        'user',
+        'end_date',
+        'vless_uuid',
+        'total_paid',
+        'is_vpn_client_active',
+        'total_bytes_limit',
+        'used_bytes',
+    )
+    readonly_fields = (
+        'vless_uuid',
+    )
     
-admin.site.register(Subscription)

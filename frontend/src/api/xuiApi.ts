@@ -12,6 +12,6 @@ export const claimGift = async () => {
 };
 
 export const fetchVpnConfig = async () => {
-    const response = await apiClient.get('users/vpn-config/');
+    const response = await apiClient.get('users/vpn_config/');
     return response.data;
 };

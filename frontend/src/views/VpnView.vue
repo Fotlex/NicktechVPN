@@ -111,16 +111,6 @@ export default defineComponent({
       hapticFeedback('success');
       openDownloadPageFromSdk();
     };
-
-    // const handleConnect = async (): Promise<void> => {
-    //   try {
-    //     const response = await fetchVpnConfig();
-    //     if (response.vpn_url) {
-    //       const fullUrl = `${import.meta.env.VITE_API_URL}${response.vpn_url}`;
-    //       openSubscriptionLink(fullUrl);
-    //     }
-    //   } catch (error) {}
-    // };
     
     const handleConnect = (): void => {
       hapticFeedback('success');
@@ -129,7 +119,7 @@ export default defineComponent({
         .then((response) => {
           console.log("VPN config fetched:", response);
           if (response.vpn_url) {
-            const fullUrl = `${import.meta.env.VITE_API_URL}${response.vpn_url}`;
+            const fullUrl = `${import.meta.env.VITE_API_URL}/subscriptions/${response.vpn_url}`;
             console.log("Opening subscription link:", fullUrl);
             setTimeout(() => {
               openSubscriptionLink(fullUrl);
@@ -145,17 +135,7 @@ export default defineComponent({
         });
     };
 
-    // const handleCopyConfig = async (): Promise<void> => {
-    //   try {
-    //     const response = await fetchVpnConfig();
-    //     if (response.vpn_url) {
-    //       const fullUrl = `${import.meta.env.VITE_API_URL}${response.vpn_url}`;
-    //       copyToClipboard(fullUrl);
-    //     }
-    //     notify({ message: 'Скопировано', type: 'info' });
-    //   } catch (error) {}
-    // };
-
+    
     const handleCopyConfig = (): void => {
       hapticFeedback('success');
       console.log("Fetching VPN config...");
@@ -163,7 +143,7 @@ export default defineComponent({
         .then((response) => {
           console.log("VPN config fetched:", response);
           if (response.vpn_url) {
-            const fullUrl = `${import.meta.env.VITE_API_URL}${response.vpn_url}`;
+            const fullUrl = `${import.meta.env.VITE_API_URL}/subscriptions/${response.vpn_url}`;
             console.log("Copying to clipboard:", fullUrl);
             setTimeout(() => {
               try {
@@ -186,7 +166,6 @@ export default defineComponent({
       hapticFeedback('success');
       console.log('Добавление правила...');
       const rulesetUrl = `${import.meta.env.VITE_API_URL}/ruleset/`;
-      // const rulesetUrl = 'https://stridently-virtuous-squirrelfish.cloudpub.ru:443/ruleset.json';
       openRulesetLink(rulesetUrl);
     };
 
