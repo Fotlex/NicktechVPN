@@ -1,6 +1,12 @@
 from celery import shared_task
 
-from .py3xui import create_client, update_client, add_client_to_server, User, VpnServer
+from .py3xui import (
+    create_client,
+    update_client,
+    add_client_to_server,
+    User, VpnServer, Subscription,
+    auto_update_data
+)
 
 
 @shared_task
@@ -25,3 +31,13 @@ def add_client_to_server_task(user: User, server: VpnServer):
         add_client_to_server(user=user, server=server)
     except Exception as e:
         pass
+    
+    
+@shared_task(name='auto_update_data')
+def auto_update_data_task():
+    try:
+        subscriptions = Subscription.objects.filter(is_vpn_client_active=True)
+        for subscription in subscriptions:
+            auto_update_data(subscription=subscription)
+    except Exception as e:
+        print(e)

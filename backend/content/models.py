@@ -5,6 +5,41 @@ from django.db.models.signals import post_save
 CACHE_KEY_BOT_SETTINGS = "bot_settings"
 
 
+class Attachments(models.Model):
+    types = {
+        'photo': 'Фото',
+        'video': 'Видео',
+        'document': 'Документ'
+    }
+
+    type = models.CharField('Тип вложения', choices=types)
+    file = models.FileField('Файл')
+    file_id = models.TextField(null=True)
+    mailing = models.ForeignKey('Mailing', on_delete=models.SET_NULL, null=True, related_name='attachments')
+
+    class Meta:
+        verbose_name = 'Вложение'
+        verbose_name_plural = 'Вложения'
+
+
+class Mailing(models.Model):
+    RULES = {
+        'OnlyPay': 'Только оплатившим',
+        'NotPay': 'Только не оплатившим',
+        'All': 'Всем'
+    }
+    
+    text = models.TextField('Текст')
+    datetime = models.DateTimeField('Дата/Время')
+    is_ok = models.BooleanField('Статус отправки')
+    rules = models.CharField(choices=RULES, default='All')
+
+    class Meta:
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылки'
+        
+
+
 class WebAppUrl(models.Model):
     url = models.URLField(
         verbose_name="URL для Web App",

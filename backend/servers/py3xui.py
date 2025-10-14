@@ -1,6 +1,3 @@
-import aiohttp
-import base64
-
 from py3xui import Api, Client
 
 from datetime import timedelta, datetime
@@ -47,8 +44,6 @@ def create_client(tg_id: int, limit_gb: int):
       
       
 def auto_update_data(subscription: Subscription):
-    # Обновлять использованный трафик
-    # Обновлять статус клиента
     servers = list(VpnServer.objects.filter(is_active=True))
     
     trafic_sum = 0
@@ -63,7 +58,8 @@ def auto_update_data(subscription: Subscription):
         user = subscription.user
         client = api.client.get_by_email(email=str(user.id))
         trafic_sum += client.down + client.up
-    
+        client.id = str(subscription.vless_uuid)
+        
     subscription.used_bytes = trafic_sum
     
     if trafic_sum > subscription.total_bytes_limit:
@@ -79,7 +75,7 @@ def auto_update_data(subscription: Subscription):
             user = subscription.user
             client = api.client.get_by_email(email=str(user.id))
             client.enable = False
-            
+            client.id = str(subscription.vless_uuid)
             api.client.update(str(subscription.vless_uuid), client)
         
     subscription.save()
@@ -124,9 +120,10 @@ def update_client(tg_id: int, days: int, gb_limit: int):
                 
                 client.up = 0
                 client.down = 0
-                client.enable = True
+                
                 client.total_gb = subscription.total_bytes_limit
             
+            client.enable = True
             client.id = str(subscription.vless_uuid)
             api.client.update(str(subscription.vless_uuid), client)
 

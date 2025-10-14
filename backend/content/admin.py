@@ -2,7 +2,20 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .models import BotTexts, GroupUrl, WebAppUrl, VpnSettings
+from .models import BotTexts, GroupUrl, WebAppUrl, VpnSettings, Attachments, Mailing
+
+
+class AttachmentsInline(admin.TabularInline):
+    model = Attachments
+    extra = 2
+
+    exclude = ('file_id',)
+
+
+@admin.register(Mailing)
+class MailingAdmin(admin.ModelAdmin):
+    list_display = ['text', 'is_ok', 'rules']
+    inlines = [AttachmentsInline]
 
 
 class SingletonModelAdmin(admin.ModelAdmin):
