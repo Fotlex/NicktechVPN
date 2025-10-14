@@ -113,10 +113,15 @@ class YooKassaWebhookView(viewsets.ViewSet):
             payment_id = notification.object.id
             
             if notification.object.status == "succeeded":
-                payment = Payment.objects.select_related('user').filter(payment_id=payment_id).first()
+                payment = Payment.objects.select_related('user', 'tariff').filter(payment_id=payment_id).first()
                 payment.status = "succeeded"
                 user = payment.user
                 tariff = payment.tariff
+                
+                referred_by = user.referred_by
+                referred_by.refferal_balance += int(float(tariff.price) * 0.1)
+                referred_by.save()
+                
                 vpn_settings = VpnSettings.objects.get(id=1)
                 gb_limit = tariff.duration_days * vpn_settings.trafic_day_limit
                 payment.save()
@@ -133,4 +138,5 @@ class YooKassaWebhookView(viewsets.ViewSet):
             return Response({"status": "ok"}, status=status.HTTP_200_OK)
 
         except Exception as e:
+            print(e)
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

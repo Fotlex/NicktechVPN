@@ -4,10 +4,10 @@
     @click="selectPlan"
   >
     <div class="plan-details">
-      <div class="plan-duration">{{ duration }}</div>
-      <div class="plan-price">{{ price }}₽ / день</div>
+      <div class="plan-duration">{{ duration_days }} дней</div>
+      <div class="plan-price">{{ price / duration_days}}₽ / день</div>
       <div class="plan-total-wrapper">
-        <div class="plan-total">Общая сумма {{ total }}₽</div>
+        <div class="plan-total">Общая сумма {{ price }}₽</div>
         <div v-if="originalPrice" class="original-price">
             {{ originalPrice }}₽
             <SvgIcon :iconName="'strike-line'" class="strike-line" />
@@ -32,8 +32,8 @@ export default defineComponent({
     SvgIcon,
   },
   props: {
-    duration: {
-      type: String,
+    duration_days: {
+      type: Number,
       required: true,
     },
     price: {

@@ -43,10 +43,9 @@ class ReferralViewSet(viewsets.ViewSet):
 
         referral_data = []
         for referral in referrals:
-            referred_user = referral.referred_by
             referral_data.append({
-                'id': referred_user.id,
-                'username': referred_user.username,
+                'id': referral.id,
+                'username': referral.username,
             })
 
         return Response(referral_data, status=status.HTTP_200_OK)

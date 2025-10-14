@@ -6,7 +6,7 @@
       <TariffPlan
         v-for="plan in plans"
         :key="plan.id"
-        :duration="plan.duration"
+        :duration_days="plan.duration_days"
         :price="plan.price"
         :total="plan.total"
         :originalPrice="plan.original_price"
@@ -49,7 +49,7 @@ import BackButton from '@/components/BackButton.vue';
 
 interface TariffPlan {
   id: number;
-  duration: string;
+  duration_days: number;
   price: number;
   total: number;
   original_price?: number;

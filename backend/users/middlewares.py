@@ -76,7 +76,7 @@ class TWAAuthorizationMiddleware:
                     start_param = str(start_param)
                     if start_param.isdigit():
                         referrer_id = int(start_param)
-                        if current_user.tg_id != referrer_id:
+                        if current_user.id != referrer_id:
                             try:
                                 referrer_user = User.objects.get(id=referrer_id)
                                 
