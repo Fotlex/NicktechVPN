@@ -126,14 +126,15 @@ class YooKassaWebhookView(viewsets.ViewSet):
                 gb_limit = tariff.duration_days * vpn_settings.trafic_day_limit
                 payment.save()
                 
-            update_client_task.apply_async(args=[
-                user.id,
-                tariff.duration_days,
-                gb_limit,
-            ])
+                update_client_task.apply_async(args=[
+                    user.id,
+                    tariff.duration_days,
+                    gb_limit,
+                ])
                 
             if notification.object.status == "canceled":
                 payment.status = "canceled"
+                payment.save()
 
             return Response({"status": "ok"}, status=status.HTTP_200_OK)
 

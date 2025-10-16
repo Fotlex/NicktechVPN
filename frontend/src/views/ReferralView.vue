@@ -11,7 +11,7 @@
       <div class="referral-list">
         <ReferralUser v-for="user in referralUsers" :key="user.id" :user="user" />
       </div>
-      <InfoBanner class="info-banner" text="С каждого приведённого друга вы будете получать % от его пополнений на баланс" />
+      <InfoBanner class="info-banner" text="С каждого приведённого друга вы будете получать % от его пополнений на баланс! Чтобы вывести баланс обратитесь в поддержку. Минимальная сумма вывода 500р" />
     </div>
     <DashboardButton class="dashboard-button" />
   </div>
