@@ -18,6 +18,9 @@ class User(models.Model):
     )
 
     refferal_balance = models.IntegerField(default=0, verbose_name='Реферальный баланс')
+    total_paid = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0, verbose_name="Всего пополнено"
+    )
     
     referred_by = models.ForeignKey(
         "self",
@@ -53,9 +56,6 @@ class Subscription(models.Model):
         default=False, verbose_name="Триал активирован"
     )
 
-    total_paid = models.DecimalField(
-        max_digits=10, decimal_places=2, default=0, verbose_name="Всего пополнено"
-    )
 
     is_vpn_client_active = models.BooleanField(
         default=False, verbose_name="Клиент VPN активен в 3x-ui"

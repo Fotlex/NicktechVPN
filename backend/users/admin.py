@@ -12,6 +12,7 @@ class UserAdmin(admin.ModelAdmin):
         "referred_by",
         "date_joined",
         "refferal_balance",
+        'total_paid',
     )
     search_fields = ("id", "username", "first_name")
     list_filter = ("date_joined",)
@@ -27,7 +28,6 @@ class Subscription(admin.ModelAdmin):
         'user',
         'end_date',
         'vless_uuid',
-        'total_paid',
         'is_vpn_client_active',
         'total_bytes_limit',
         'used_bytes',

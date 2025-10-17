@@ -118,9 +118,14 @@ class YooKassaWebhookView(viewsets.ViewSet):
                 user = payment.user
                 tariff = payment.tariff
                 
+                user.total_paid += tariff.price
+                
                 referred_by = user.referred_by
-                referred_by.refferal_balance += int(float(tariff.price) * 0.1)
-                referred_by.save()
+                if referred_by:
+                    referred_by.refferal_balance += int(float(tariff.price) * 0.1)
+                    referred_by.save()
+                
+                user.save()
                 
                 vpn_settings = VpnSettings.objects.get(id=1)
                 gb_limit = tariff.duration_days * vpn_settings.trafic_day_limit
