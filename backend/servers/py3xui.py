@@ -77,7 +77,11 @@ def auto_update_data(subscription: Subscription):
             client.enable = False
             client.id = str(subscription.vless_uuid)
             api.client.update(str(subscription.vless_uuid), client)
-        
+    
+    if subscription.end_date < timezone.now():
+        subscription.is_vpn_client_active = False
+    
+    subscription.last_traffic_update = timezone.now()
     subscription.save()
         
         
@@ -87,6 +91,8 @@ def update_client(tg_id: int, days: int, gb_limit: int):
     try:
         user = User.objects.get(id=tg_id)
         subscription = Subscription.objects.get(user=user)
+        
+        subscription.last_traffic_update = timezone.now()
         
         if subscription.end_date < timezone.now():
             subscription.end_date = timezone.now() + timedelta(days=days)
@@ -139,10 +145,10 @@ def add_client_to_server(user: User, server: VpnServer):
         pass
     
     api = Api(
-            host=server.api_url,
-            username=server.api_username,
-            password=server.api_password,
-        )
+        host=server.api_url,
+        username=server.api_username,
+        password=server.api_password,
+    )
     api.login()
     
     client = Client(

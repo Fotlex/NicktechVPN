@@ -70,7 +70,10 @@ class Subscription(models.Model):
     last_traffic_update = models.DateTimeField(
         null=True, blank=True, verbose_name="Последнее обновление трафика"
     )
-
+    last_notification_update = models.DateTimeField(
+        null=True, blank=True, verbose_name="Последнее уведмление"
+    )
+    
     @property
     def is_active(self):
         return self.end_date > timezone.now()
@@ -95,3 +98,6 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
+        
+        
+
