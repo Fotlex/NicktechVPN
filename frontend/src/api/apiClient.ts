@@ -11,4 +11,22 @@ apiClient.interceptors.request.use(config => {
   return config;
 });
 
+apiClient.interceptors.response.use(
+  (response) => response,
+
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      const responseData = error.response.data;
+      
+      if (responseData && responseData.redirect_url) {
+        console.log(`Требуется авторизация. Перенаправляем на: ${responseData.redirect_url}`);
+        
+        WebApp.openTelegramLink(responseData.redirect_url);
+      }
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
 export default apiClient;

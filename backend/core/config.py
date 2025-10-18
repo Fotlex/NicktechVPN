@@ -26,7 +26,8 @@ class Config(BaseSettings):
     YOOKASSA_SHOP_ID: str
     YOOKASSA_SECRET_KEY: str
     APP_URL: str
-
+    TELEGRAM_BOT_URL: str
+    
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

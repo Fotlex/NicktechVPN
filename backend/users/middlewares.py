@@ -14,6 +14,7 @@ from telegram_webapp_auth.errors import InvalidInitDataError
 from .models import User, Subscription
 from backend.servers.tasks import create_client_task
 from backend.content.models import VpnSettings
+from backend.core.config import config
 
 
 class TWAAuthorizationMiddleware:
@@ -29,7 +30,10 @@ class TWAAuthorizationMiddleware:
         
         if not auth_cred:
             return JsonResponse(
-                data={'error': 'Authorization header required'}, 
+                data={
+                    'error': 'Authorization header required',
+                    'redirect_url': config.TELEGRAM_BOT_URL 
+                }, 
                 status=status.HTTP_401_UNAUTHORIZED
             )
         
@@ -39,7 +43,10 @@ class TWAAuthorizationMiddleware:
         except InvalidInitDataError:
             print("invalid init data")
             return JsonResponse(
-                data={'error': 'Invalid Telegram auth data'}, 
+                data={
+                    'error': 'Invalid Telegram auth data',
+                    'redirect_url': config.TELEGRAM_BOT_URL
+                }, 
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
