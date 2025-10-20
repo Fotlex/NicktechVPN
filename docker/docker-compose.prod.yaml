@@ -1,0 +1,147 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: vpn_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ../.env
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    container_name: vpn_redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    env_file:
+      - ../.env
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/dockerfiles/python/prod.Dockerfile
+    container_name: vpn_backend
+    command: gunicorn backend.core.wsgi:application --bind 0.0.0.0:8000 --workers 2
+    volumes:
+      - static_volume:/app/backend/static
+      - media_volume:/app/backend/media
+    expose:
+      - 8000
+    env_file:
+      - ../.env
+    restart: always
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  bot:
+    build:
+      context: ..
+      dockerfile: docker/dockerfiles/python/prod.Dockerfile
+    container_name: vpn_bot
+    command: python bot/main.py
+    volumes:
+      - media_volume:/app/backend/media
+    env_file:
+      - ../.env
+    restart: always
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_worker:
+    build:
+      context: ..
+      dockerfile: docker/dockerfiles/python/prod.Dockerfile
+    container_name: vpn_celery_worker
+    command: celery -A backend.core worker -l INFO --concurrency=2
+    volumes:
+      - media_volume:/app/backend/media
+    env_file:
+      - ../.env
+    restart: always
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_beat:
+    build:
+      context: ..
+      dockerfile: docker/dockerfiles/python/prod.Dockerfile
+    container_name: vpn_celery_beat
+    command: celery -A backend.core beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - ../.env
+    restart: always
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .. 
+      dockerfile: docker/dockerfiles/node/prod.Dockerfile
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/dockerfiles/nginx.Dockerfile
+    container_name: vpn_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/prod.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+      - static_volume:/app/backend/static:ro
+      - media_volume:/app/backend/media:ro
+    env_file: ../.env
+    depends_on:
+      - backend
+      - frontend
+
+  certbot:
+    image: certbot/certbot
+    container_name: vpn_certbot
+    volumes:
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
+  media_volume:
+  certbot_conf:
+  certbot_www:

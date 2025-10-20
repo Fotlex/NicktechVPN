@@ -86,3 +86,12 @@ prod-superuser:
 
 prod-static:
 	$(DC_PROD) exec backend python backend/manage.py collectstatic --noinput
+
+prod-cert-init:
+	$(DC_PROD) up -d nginx
+	$(DC_PROD) run --rm certbot certonly --webroot --webroot-path /var/www/certbot -d ${DOMAIN_NAME} --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email -n
+	$(DC_PROD) up -d --force-recreate
+
+prod-cert-renew:
+	$(DC_PROD) run --rm certbot renew
+	$(DC_PROD) exec nginx nginx -s reload
