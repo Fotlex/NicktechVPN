@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings
 
 class Config(BaseSettings):
     DOMAIN_NAME: str
-    
+    CERTBOT_EMAIL: str
     BOT_TOKEN: str
 
     DEBUG: bool
