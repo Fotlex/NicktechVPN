@@ -107,30 +107,23 @@ services:
       redis:
         condition: service_healthy
 
-  frontend:
-    build:
-      context: .. 
-      dockerfile: docker/dockerfiles/node/prod.Dockerfile
-    image: vpn_frontend_builder
-
   nginx:
     build:
       context: ..
-      dockerfile: docker/dockerfiles/nginx.Dockerfile
+      dockerfile: docker/dockerfiles/node/prod.Dockerfile
     container_name: vpn_nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/prod.conf.template:/etc/nginx/templates/default.conf.template:ro
       - certbot_conf:/etc/letsencrypt
       - certbot_www:/var/www/certbot
       - static_volume:/app/backend/static:ro
       - media_volume:/app/backend/media:ro
-    env_file: ../.env
+    env_file:
+      - ../.env
     depends_on:
       - backend
-      - frontend
 
   certbot:
     image: certbot/certbot
