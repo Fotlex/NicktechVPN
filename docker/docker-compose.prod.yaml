@@ -111,6 +111,7 @@ services:
     build:
       context: .. 
       dockerfile: docker/dockerfiles/node/prod.Dockerfile
+    image_name: vpn_frontend_builder
 
   nginx:
     build:
