@@ -8,11 +8,11 @@
 *.swp
 *.swo
 
-# Docker
-.dockerignore
-docker-compose*.yml
-Makefile
-docker/
+# # Docker
+# .dockerignore
+# docker-compose*.yml
+# Makefile
+# docker/
 
 # Environments
 .env*
