@@ -1,3 +1,6 @@
+include .env
+export
+
 COMPOSE_PROJECT_NAME_DEV=vpn_dev
 COMPOSE_PROJECT_NAME_PROD=vpn_prod
 
