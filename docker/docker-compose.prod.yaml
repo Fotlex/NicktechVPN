@@ -37,7 +37,7 @@ services:
     container_name: vpn_backend
     command: gunicorn backend.core.wsgi:application --bind 0.0.0.0:8000 --workers 2
     volumes:
-      - static_volume:/app/backend/static
+      - static_volume:/app/backend/static_root
       - media_volume:/app/backend/media
     expose:
       - 8000
