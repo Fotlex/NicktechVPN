@@ -118,7 +118,7 @@ services:
     volumes:
       - certbot_conf:/etc/letsencrypt
       - certbot_www:/var/www/certbot
-      - static_volume:/app/backend/static:ro
+      - static_volume:/app/backend/static_root:ro
       - media_volume:/app/backend/media:ro
     env_file:
       - ../.env
