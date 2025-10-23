@@ -60,7 +60,7 @@ class Payment(models.Model):
     create_at = models.DateTimeField(auto_created=True, verbose_name='Дата создания платежа')
     
     def __str__(self):
-        return f"Пользователь {self.user.id} | Тариф {self.tariff.name}"
+        return f"Пользователь {self.user.id}"
     
     
     class Meta:
