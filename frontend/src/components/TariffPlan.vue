@@ -5,11 +5,11 @@
   >
     <div class="plan-details">
       <div class="plan-duration">{{ duration_days }} дней</div>
-      <div class="plan-price">{{ price / duration_days}}₽ / день</div>
+      <div class="plan-price">{{ (price / duration_days).toFixed(1) }}₽ / день</div>
       <div class="plan-total-wrapper">
-        <div class="plan-total">Общая сумма {{ price }}₽</div>
+        <div class="plan-total">Общая сумма {{ price.toFixed(0) }}₽</div>
         <div v-if="originalPrice" class="original-price">
-            {{ originalPrice }}₽
+            {{ originalPrice.toFixed(0) }}₽
             <SvgIcon :iconName="'strike-line'" class="strike-line" />
         </div>
       </div>
