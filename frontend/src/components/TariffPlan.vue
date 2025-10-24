@@ -5,11 +5,11 @@
   >
     <div class="plan-details">
       <div class="plan-duration">{{ duration_days }} дней</div>
-      <div class="plan-price">{{ dailyPriceFormatted }}₽ / день</div>
+      <div class="plan-price">{{ formatNumber(price / duration_days, 1) }}₽ / день</div>
       <div class="plan-total-wrapper">
-        <div class="plan-total">Общая сумма {{ priceFormatted }}₽</div>
+        <div class="plan-total">Общая сумма {{ formatNumber(price, 0) }}₽</div>
         <div v-if="originalPrice" class="original-price">
-          {{ originalPriceFormatted }}₽
+          {{ formatNumber(originalPrice, 0) }}₽
         </div>
       </div>
     </div>
@@ -56,28 +56,19 @@ export default defineComponent({
       default: false,
     },
   },
-  computed: {
-    dailyPriceFormatted() {
-      if (!this.duration_days) {
-        return '0.00';
-      }
-      return (this.price / this.duration_days).toFixed(1);
-    },
-
-    priceFormatted() {
-      return this.price.toFixed(0);
-    },
-    
-    originalPriceFormatted() {
-      if (this.originalPrice !== undefined) {
-        return this.originalPrice.toFixed(0);
-      }
-      return null;
-    },
-  },
   methods: {
     selectPlan() {
       this.$emit('select-plan');
+    },
+    formatNumber(value: number, count: number) {
+      if (typeof value !== 'number') return '0,00';
+
+      const formatter = new Intl.NumberFormat('ru-RU', {
+        minimumFractionDigits: count,
+        maximumFractionDigits: count,
+      });
+
+      return formatter.format(value);
     },
   },
 });
