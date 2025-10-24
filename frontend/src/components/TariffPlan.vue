@@ -5,11 +5,11 @@
   >
     <div class="plan-details">
       <div class="plan-duration">{{ duration_days }} дней</div>
-      <div class="plan-price">{{ price / duration_days }}₽ / день</div>
+      <div class="plan-price">{{ dailyPriceFormatted }}₽ / день</div>
       <div class="plan-total-wrapper">
-        <div class="plan-total">Общая сумма {{ price }}₽</div>
+        <div class="plan-total">Общая сумма {{ priceFormatted }}₽</div>
         <div v-if="originalPrice" class="original-price">
-          {{ originalPrice }}₽
+          {{ originalPriceFormatted }}₽
         </div>
       </div>
     </div>
@@ -54,6 +54,25 @@ export default defineComponent({
     isSelected: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    dailyPriceFormatted() {
+      if (!this.duration_days) {
+        return '0.00';
+      }
+      return (this.price / this.duration_days).toFixed(1);
+    },
+
+    priceFormatted() {
+      return this.price.toFixed(0);
+    },
+    
+    originalPriceFormatted() {
+      if (this.originalPrice !== undefined) {
+        return this.originalPrice.toFixed(0);
+      }
+      return null;
     },
   },
   methods: {

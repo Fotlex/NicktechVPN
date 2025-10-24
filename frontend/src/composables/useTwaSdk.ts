@@ -53,9 +53,9 @@ export function useTwaSdk() {
     let appUrl: string;
 
     if (platform === 'ios') {
-      appUrl = `streisand://import/${subscriptionUrl}#TUGANVPN`;
+      appUrl = `streisand://import/${subscriptionUrl}`;
     } else if (platform == 'android') {
-      appUrl = `v2raytun://import/${encodeURIComponent(subscriptionUrl)}`;
+      appUrl = `hiddify://import/${encodeURIComponent(subscriptionUrl)}`;
     } else {
       appUrl = `hiddify://import/${subscriptionUrl}`;
     }
