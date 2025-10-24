@@ -10,6 +10,7 @@
         <div class="plan-total">Общая сумма {{ formatNumber(price / 1, 0) }}₽</div>
         <div v-if="originalPrice" class="original-price">
           {{ formatNumber(originalPrice / 1, 0) }}₽
+          <SvgIcon :iconName="'strike-line'" class="strike-line" />
         </div>
       </div>
     </div>
