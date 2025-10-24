@@ -7,9 +7,9 @@
       <div class="plan-duration">{{ duration_days }} дней</div>
       <div class="plan-price">{{ formatNumber(price / duration_days, 1) }}₽ / день</div>
       <div class="plan-total-wrapper">
-        <div class="plan-total">Общая сумма {{ formatNumber(price / duration_days, 0) }}₽</div>
+        <div class="plan-total">Общая сумма {{ formatNumber(price / 1, 0) }}₽</div>
         <div v-if="originalPrice" class="original-price">
-          {{ formatNumber(originalPrice, 0) }}₽
+          {{ formatNumber(originalPrice / 1, 0) }}₽
         </div>
       </div>
     </div>
