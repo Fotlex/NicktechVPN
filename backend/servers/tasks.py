@@ -50,7 +50,7 @@ def auto_update_data_task():
             
         for subscription in subscriptions:
             if timezone.now() + timedelta(days=2) > subscription.end_date:
-                if not subscription.last_notification_update or subscription.last_notification_update + timedelta(days=1) > timezone.now():
+                if not subscription.last_notification_update or subscription.last_notification_update + timedelta(days=1) < timezone.now():
                     user = subscription.user
                     requests.post(
                         url=f'https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage',
